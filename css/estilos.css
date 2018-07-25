@@ -1,0 +1,20 @@
+/* Frase */
+.frase {
+    font-size: 20px;
+    text-align: left;
+}
+
+/* Text Área */
+#campo-digitacao {
+    font-size: 20px;
+    height: 130px;
+}
+
+.campo-desativado {
+    background: lightgray;
+}
+
+/* Icones */
+.icones {
+    vertical-align: middle;
+}
