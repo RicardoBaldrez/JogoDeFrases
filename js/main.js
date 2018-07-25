@@ -1,4 +1,4 @@
-var campo = $("#campo-digitacao");
+var campo = $("#campo-digitacao").addClass("borda-preta");
 var tempoInicial = $("#tempo-digitacao").text();
 
 /* Inicialização após o conteúdo ser carregadoo */
@@ -7,6 +7,7 @@ $(document).ready(function() {
     atualizaTamanhoFrase();
     inicializaContadores();
     inicializaCronometro();
+    inicializaMarcadores();
 
     $("#botao-reiniciar").click(reiniciaJogo);
 
@@ -77,6 +78,10 @@ function reiniciaJogo() {
     campo.attr("disabled", false);
     campo.val("");
     campo.toggleClass("campo-desativado");
+    campo.addClass("borda-preta");
+    campo.removeClass("borda-vermelha");
+    campo.removeClass("borda-verde");
+
     $("#contador-caracteres").text("0");
     $("#contador-palavras").text("0");
 
@@ -84,4 +89,31 @@ function reiniciaJogo() {
 
     inicializaCronometro();
 
+}
+
+/*  */
+function inicializaMarcadores() {
+
+    var frase = $(".frase").text();
+
+    campo.on("input", function() {
+
+        var digitado = $(this).val();
+
+        var comparavel = frase.substr(0, digitado.length);
+
+        if(digitado == comparavel) {
+
+            $(this).addClass("borda-verde");
+            $(this).removeClass("borda-vermelha");
+            $(this).removeClass("borda-preta");
+
+        } else {
+
+            $(this).addClass("borda-vermelha");
+            $(this).removeClass("borda-verde");
+            $(this).removeClass("borda-preta");
+
+        }
+    });
 }

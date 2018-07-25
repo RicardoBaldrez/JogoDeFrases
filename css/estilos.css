@@ -18,3 +18,16 @@
 .icones {
     vertical-align: middle;
 }
+
+/* Bordas de comparação e inicialização */
+.borda-preta {
+    border: 3px solid #000;
+}
+
+.borda-verde {
+    border: 3px solid rgb(0, 151, 0);
+}
+
+.borda-vermelha {
+    border: 3px solid rgb(255, 69, 0);
+}
