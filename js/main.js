@@ -1,44 +1,84 @@
-/* Contando a quantidade de palavras na frase e atualizando no campo" */
-var frase = $(".frase").text();
-var numPalavras = frase.split(" ").length;
+var campo = $("#campo-digitacao");
+var tempoInicial = $("#tempo-digitacao").text();
 
-var tamanhoFrase = $("#tamanho-frase").text(numPalavras);
+/* Inicialização após o conteúdo ser carregadoo */
+$(document).ready(function() {
+
+    atualizaTamanhoFrase();
+    inicializaContadores();
+    inicializaCronometro();
+
+    $("#botao-reiniciar").click(reiniciaJogo);
+
+});
+
+/* Contando a quantidade de palavras na frase e atualizando no campo" */
+function atualizaTamanhoFrase() {
+
+    var frase = $(".frase").text();
+    var numPalavras = frase.split(" ").length;
+    var tamanhoFrase = $("#tamanho-frase").text(numPalavras);
+
+}
 
 /* Campo digitação (Text Área) */
-var campo = $("#campo-digitacao");
-campo.on("input", function() {
+function inicializaContadores() {
 
-    var conteudo = $(this).val();
+    campo.on("input", function() {
 
-    /* Contagem das palavras da frase */
-    var qtdePalavras = conteudo.split(/\S+/).length -1;
-    $("#contador-palavras").text(qtdePalavras);
+        var conteudo = $(this).val();
+    
+        /* Contagem das palavras da frase */
+        var qtdePalavras = conteudo.split(/\S+/).length -1;
+        $("#contador-palavras").text(qtdePalavras);
+    
+        /* Contagem dos caracteres da frase */
+        var conteudoSemEspaco = conteudo.replace(/\s+/g,'');
+        var qtdeCaracteres = conteudoSemEspaco.length;
+        $("#contador-caracteres").text(qtdeCaracteres);
+    
+    });
 
-    /* Contagem dos caracteres da frase */
-    var conteudoSemEspaco = conteudo.replace(/\s+/g,'');
-    var qtdeCaracteres = conteudoSemEspaco.length;
-    $("#contador-caracteres").text(qtdeCaracteres);
-
-});
+}
 
 /* Tempo Digitação */
-var tempoRestante = $("#tempo-digitacao").text();
+function inicializaCronometro() {
 
-campo.one("focus", function() {
+    var tempoRestante = $("#tempo-digitacao").text();
 
-    var cronometroID = setInterval(function() {
+    campo.one("focus", function() {
 
-        tempoRestante--;
+        $("#botao-reiniciar").attr("disabled", true);
+    
+        var cronometroID = setInterval(function() {
+    
+            tempoRestante--;
+    
+            $("#tempo-digitacao").text(tempoRestante);
+    
+            if(tempoRestante == 0) {
+    
+                campo.attr("disabled", true);
+    
+                clearInterval(cronometroID);
+                
+                $("#botao-reiniciar").attr("disabled", false);
+            }
+    
+        }, 1000);
+    });
+}
 
-        $("#tempo-digitacao").text(tempoRestante);
+/* Reiniciar Jogo */
+function reiniciaJogo() {
 
-        if(tempoRestante == 0) {
+    campo.attr("disabled", false);
+    campo.val("");
+    $("#contador-caracteres").text("0");
+    $("#contador-palavras").text("0");
 
-            campo.attr("disabled", true);
+    $("#tempo-digitacao").text(tempoInicial);
 
-            clearInterval(cronometroID);
+    inicializaCronometro();
 
-        }
-
-    }, 1000);
-});
+}
