@@ -59,39 +59,20 @@ function inicializaCronometro() {
     
             if(tempoRestante == 0) {
     
-                campo.attr("disabled", true);
-
-                campo.toggleClass("campo-desativado");
-    
                 clearInterval(cronometroID);
+
+                finalizaJogo();
                 
                 $("#botao-reiniciar").attr("disabled", false);
+
+                inserePlacar();
             }
     
         }, 1000);
     });
 }
 
-/* Reiniciar Jogo */
-function reiniciaJogo() {
-
-    campo.attr("disabled", false);
-    campo.val("");
-    campo.toggleClass("campo-desativado");
-    campo.addClass("borda-preta");
-    campo.removeClass("borda-vermelha");
-    campo.removeClass("borda-verde");
-
-    $("#contador-caracteres").text("0");
-    $("#contador-palavras").text("0");
-
-    $("#tempo-digitacao").text(tempoInicial);
-
-    inicializaCronometro();
-
-}
-
-/*  */
+/* Comparação do digitado com a frase */
 function inicializaMarcadores() {
 
     var frase = $(".frase").text();
@@ -116,4 +97,58 @@ function inicializaMarcadores() {
 
         }
     });
+}
+
+/* Finaliza Jogo */
+function finalizaJogo() {
+
+    campo.attr("disabled", true);
+
+    campo.toggleClass("campo-desativado");
+
+}
+
+/* Reiniciar Jogo */
+function reiniciaJogo() {
+
+    campo.attr("disabled", false);
+    campo.val("");
+    campo.toggleClass("campo-desativado");
+    campo.addClass("borda-preta");
+    campo.removeClass("borda-vermelha");
+    campo.removeClass("borda-verde");
+
+    $("#contador-caracteres").text("0");
+    $("#contador-palavras").text("0");
+
+    $("#tempo-digitacao").text(tempoInicial);
+
+    inicializaCronometro();
+
+}
+
+/* Insere no placar */
+function inserePlacar() {
+
+    var corpoTabela = $(".placar").find("tbody");
+    var usuario = "Ricardo";
+    var numPalavras = $("#contador-palavras").text();
+
+    var linha = novaLinha(usuario, numPalavras);
+
+    corpoTabela.append(linha);
+
+}
+
+/* Nova linha que será inserida no placar */
+function novaLinha(usuario, palavras) {
+
+    var linha = $("<tr>");
+    var colunaUsuario = $("<td>").text(usuario);
+    var colunaPalavras = $("<td>").text(palavras);
+
+    linha.append(colunaUsuario);
+    linha.append(colunaPalavras);
+
+    return linha;
 }
